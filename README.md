@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jumble
 
-## Getting Started
+A mobile-first daily word puzzle game where players find words on a Boggle-style letter grid within a time limit. Same puzzle for all players each day, with shareable results.
 
-First, run the development server:
+## Play
+
+Find as many words as possible by connecting adjacent letters (including diagonals). Each tile can only be used once per word. Race against the 3-minute timer!
+
+### Controls
+
+- **Drag**: Swipe across tiles to form words, releases to submit
+- **Tap**: Tap tiles to select, double-tap last tile to submit
+- **Clear**: Reset your current selection
+
+### Scoring
+
+| Word Length | Points |
+|-------------|--------|
+| 3-4 letters | 1 pt   |
+| 5 letters   | 2 pts  |
+| 6 letters   | 3 pts  |
+| 7 letters   | 5 pts  |
+| 8+ letters  | 11 pts |
+
+## Features
+
+- **Daily Puzzle**: Seeded RNG ensures the same puzzle for all players each day
+- **Touch-Optimized**: Drag or tap input methods for mobile and desktop
+- **Visual Feedback**: Path highlighting, color-coded timer warnings, haptic feedback
+- **Statistics**: Track games played, streaks, best scores
+- **Shareable Results**: Native share on mobile, clipboard on desktop
+- **Offline Support**: Dictionary loaded once, game works offline
+- **Dark Mode**: Easy on the eyes
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router) + TypeScript
+- **Styling**: Tailwind CSS
+- **Storage**: localStorage (no backend required)
+- **Dictionary**: ENABLE word list (~172K words)
+- **Deployment**: Vercel
+
+## Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Run linter
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── app/                    # Next.js app router
+├── components/             # React components
+│   ├── Game.tsx           # Main game orchestrator
+│   ├── BoggleGrid.tsx     # Interactive letter grid
+│   ├── Tile.tsx           # Individual letter tile
+│   ├── Timer.tsx          # Countdown display
+│   └── ...                # Modals, lists, buttons
+├── hooks/                  # Custom React hooks
+│   ├── useGameState.ts    # Game state management
+│   ├── useTimer.ts        # Countdown timer
+│   └── useTouchDrag.ts    # Touch/mouse handling
+├── lib/                    # Core logic
+│   ├── dictionary.ts      # Trie-based word validation
+│   ├── boardGenerator.ts  # Seeded board generation
+│   ├── wordValidator.ts   # Path validation
+│   └── scoring.ts         # Score calculation
+├── types/                  # TypeScript interfaces
+└── constants/              # Game configuration
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configuration
 
-## Learn More
+Edit `src/constants/gameConfig.ts` to customize:
 
-To learn more about Next.js, take a look at the following resources:
+```typescript
+export const BOARD_SIZE = 4;        // Grid size (4x4)
+export const TIMER_DURATION = 180;  // Seconds (3 minutes)
+export const MIN_WORD_LENGTH = 3;   // Minimum word length
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/jumble)
 
-## Deploy on Vercel
+Or deploy manually:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm i -g vercel
+vercel
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT
